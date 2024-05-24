@@ -8,6 +8,7 @@ export const registerUser = createAsyncThunk(
     const request = await axios.post('https://test.solz.me/api/v1/user/register', userData);
     const response = request.data;
     console.log('API response:', response);
+    console.log('msg:', response.message);
     // Optionally, you can store the user data in localStorage or perform any other necessary actions
     return response;
   }
