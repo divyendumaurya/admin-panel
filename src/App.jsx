@@ -4,6 +4,9 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import "../src/index.css"
 import Signup from './pages/SignUp'
+import ProductList from './components/ProductList'
+import CreateProduct from './components/CreateProduct'
+import EditProduct from './components/EditProduct'
 
 const App = () => {
   return (
@@ -13,6 +16,9 @@ const App = () => {
         <Route exact path ="/" element={<Home/>}/>
         <Route path ="/login" element ={<Login/>}/>
         <Route path ="/signUp" element={<Signup/>}/>
+        <Route path ="/products" element={<ProductList/>}/>
+        <Route path="/create-product" element={<CreateProduct />} />
+        <Route path="/edit-product/:id" element={<EditProduct />} />
       </Routes>
     </Router>
     
