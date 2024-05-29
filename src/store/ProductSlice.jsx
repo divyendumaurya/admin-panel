@@ -10,12 +10,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 });
 
 
-// export const createProduct = createAsyncThunk('products/createProduct', async (productData) => {
-//     console.log("Creating product with data:", productData);
-//     const response = await axios.post('https://api.escuelajs.co/api/v1/products/', productData);
-//     console.log("Create response:", response.data);
-//     return response.data;
-//   });
+
 
 
 export const createProduct = createAsyncThunk('products/createProduct', async (productData) => {

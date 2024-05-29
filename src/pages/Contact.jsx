@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
+import { Link } from 'react-router-dom';
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("mbjnenjg");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   if (state.succeeded) {
-    return <p className="text-green-500">Thanks for joining!</p>;
+    return (
+      <div>
+        {showSuccessMessage ? (
+          <p className="text-green-500">Your message has reached us!</p>
+        ) : (
+          <p className="text-green-500">Thanks for joining!</p>
+        )}
+        <Link
+          className="text-blue-500 underline"
+          to="/contact"
+          onClick={() => {
+            state.resetForm();
+            setShowSuccessMessage(false);
+          }}
+        >
+          Go Back
+        </Link>
+      </div>
+    );
   }
 
   return (

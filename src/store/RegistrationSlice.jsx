@@ -19,7 +19,9 @@ export const registerUser = createAsyncThunk(
         return rejectWithValue('User already exists');
       }
       const request = await axios.post('https://api.escuelajs.co/api/v1/users/', userData);
+      console.log(request.data)
       return request.data;
+      
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
