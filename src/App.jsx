@@ -10,6 +10,7 @@ import EditProduct from './components/EditProduct';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import About from './pages/About';
+import Contact from './pages/Contact';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="edit-product/:id" element={<EditProduct />} />
           </Route>
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </Router>
     </>
