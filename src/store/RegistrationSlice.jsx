@@ -1,16 +1,28 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Define the async thunk for registration
+// Async Thunks
+export const checkUserAvailability = createAsyncThunk(
+  'registration/checkUserAvailability',
+  async (email) => {
+    const response = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', { email });
+    return response.data.isAvailable;
+  }
+);
+
 export const registerUser = createAsyncThunk(
   'registration/registerUser',
-  async (userData) => {
-    const request = await axios.post('https://test.solz.me/api/v1/user/register', userData);
-    const response = request.data;
-    console.log('API response:', response);
-    console.log('msg:', response.message);
-    // Optionally, you can store the user data in localStorage or perform any other necessary actions
-    return response;
+  async (userData, { rejectWithValue }) => {
+    try {
+      const availabilityResponse = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', { email: userData.email });
+      if (!availabilityResponse.data.isAvailable) {
+        return rejectWithValue('User already exists');
+      }
+      const request = await axios.post('https://api.escuelajs.co/api/v1/users/', userData);
+      return request.data;
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
@@ -36,7 +48,7 @@ const registrationSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       });
   },
 });

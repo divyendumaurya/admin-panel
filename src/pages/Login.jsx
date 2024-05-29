@@ -1,70 +1,7 @@
-// import React, { useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux';
-// import { loginUser } from '../store/UserSlice';
-// import { useNavigate } from 'react-router-dom';
-
-// const Login = () => {
-//   //states
-//   const [email , setEmail] = useState('');
-//   const [password , setPassword] = useState('');
-
-//   // Redux state 
-//     const {loading , error} = useSelector((state)=>state.user);
-
-
-//   const dispatch = useDispatch();
-
-//   const navigate = useNavigate();
-
-//   const handleLogin =(e)=>{
-//     e.preventDefault();
-//     let userCred={
-//       email,password
-//     }
-//     dispatch(loginUser(userCred)).then((result)=>{
-//       if(result.payload){
-
-//           setEmail('');
-//           setPassword('');
-//           navigate('/');
-//       }
-//     })
-//    }
-
-
-//   return (
-//     <>
-//     <form onSubmit={handleLogin}>
-//     <label htmlFor="email">email</label>
-//     <input type="email" required  className='border bg-slate-400' value={email} onChange={(e)=> setEmail(e.target.value)}/>
-//     <br/>
-//     <label htmlFor="password">pass</label>
-//     <input type="password" required className='border bg-slate-400' value={password} onChange={(e)=>setPassword(e.target.value)} />
-//     <br/>
-
-//     <button type='submit'>{loading?"Loading..." :  "Login"}</button>
-//     {error&&(
-//       <div className='bg-red-500' role='alert'>{error}</div>
-//     )}
-//     </form>
-    
-    
-//     </>
-//   )
-// }
-
-// export default Login
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../store/UserSlice';
-import { useNavigate , Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -79,10 +16,12 @@ const Login = () => {
     const userCred = { email, password };
     dispatch(loginUser(userCred)).then((result) => {
       if (result.payload) {
-        localStorage.setItem('user', JSON.stringify(result.payload)); // Save user data to localStorage
+        // localStorage.setItem('user', JSON.stringify(result.payload.user)); // Save user data to localStorage
+        localStorage.setItem('access_token', result.payload.access_token);
+        localStorage.setItem('refresh_token', result.payload.refresh_token);
         setEmail('');
         setPassword('');
-        navigate('/');
+        navigate('/user/products');
       }
     });
   };

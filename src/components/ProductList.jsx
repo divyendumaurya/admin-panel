@@ -1,15 +1,29 @@
-// src/components/ProductList.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, deleteProduct } from '../store/ProductSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProductDrawer from '../components/ProductDrawer';
+
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.products);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  // const navigate = useNavigate();
+
+  const user = (() => {
+    const userString = localStorage.getItem('user');
+    if (userString === null || userString === 'undefined') {
+      return null;
+    }
+    try {
+      return JSON.parse(userString);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return null;
+    }
+  })();
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -29,13 +43,25 @@ const ProductList = () => {
     setSelectedProduct(null);
   };
 
+  // const handleLogout = () => {
+  //   localStorage.removeItem('user');
+  //   localStorage.removeItem('access_token');
+  //   localStorage.removeItem('refresh_token');
+  //   navigate('/');
+  // };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
+      
+
       <h1>Product List</h1>
-      <Link to="/create-product"><button>Create Product</button></Link>
+      <Link to="/user/create-product">
+        <button>Create Product</button>
+      </Link>
+      
       <table>
         <thead>
           <tr>
@@ -52,7 +78,9 @@ const ProductList = () => {
                 <td>{product.price}</td>
                 <td>
                   <button onClick={() => handleOpenDrawer(product)}>View</button>
-                  <Link to={`/edit-product/${product.id}`}><button>Edit</button></Link>
+                  <Link to={`/user/edit-product/${product.id}`}>
+                    <button>Edit</button>
+                  </Link>
                   <button onClick={() => handleDelete(product.id)}>Delete</button>
                 </td>
               </tr>
@@ -64,13 +92,7 @@ const ProductList = () => {
           )}
         </tbody>
       </table>
-      {selectedProduct && (
-        <ProductDrawer
-          product={selectedProduct}
-          onClose={handleCloseDrawer}
-          visible={drawerVisible}
-        />
-      )}
+      {selectedProduct && <ProductDrawer product={selectedProduct} onClose={handleCloseDrawer} visible={drawerVisible} />}
     </div>
   );
 };

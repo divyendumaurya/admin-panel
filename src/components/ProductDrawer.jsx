@@ -13,6 +13,8 @@ const ProductDrawer = ({ product, onClose, visible }) => {
     >
       <p>Name: {product.title}</p>
       <p>Price: {product.price}</p>
+      <p>Description: {product.description}</p>
+      <p>CategoryId: {product.categoryId}</p>
       {/* Add more product details here */}
     </Drawer>
   );

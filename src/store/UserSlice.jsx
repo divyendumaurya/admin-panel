@@ -4,10 +4,10 @@ import axios from "axios";
 export const loginUser=createAsyncThunk(
     'user/loginUser',
     async(userCred)=>{
-        const request = await axios.post("https://test.solz.me/api/v1/user/login" , userCred);
+        const request = await axios.post("https://api.escuelajs.co/api/v1/auth/login" , userCred);
         console.log('API response:', request.data);
         const response = await request.data;
-        localStorage.setItem("user", JSON.stringify(response));
+        // localStorage.setItem("user", JSON.stringify(response));
         return response;
     }
 )
