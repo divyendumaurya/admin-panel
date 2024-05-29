@@ -9,6 +9,7 @@ import CreateProduct from './components/CreateProduct';
 import EditProduct from './components/EditProduct';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
+import About from './pages/About';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="create-product" element={<CreateProduct />} />
             <Route path="edit-product/:id" element={<EditProduct />} />
           </Route>
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </>

@@ -1,8 +1,34 @@
+// // src/components/ProductDrawer.js
+// import React from 'react';
+// import { Drawer } from 'antd';
+
+// const ProductDrawer = ({ product, onClose, visible }) => {
+//   return (
+//     <Drawer
+//       title={product.title}
+//       placement="right"
+//       onClose={onClose}
+//       open={visible}
+//       width={400}
+//     >
+//       <p>Name: {product.title}</p>
+//       <p>Price: {product.price}</p>
+//       <p>Description: {product.description}</p>
+//       <p>CategoryId: {product.categoryId}</p>
+//       {/* Add more product details here */}
+//     </Drawer>
+//   );
+// };
+
+// export default ProductDrawer;
+
+
+
 // src/components/ProductDrawer.js
 import React from 'react';
 import { Drawer } from 'antd';
 
-const ProductDrawer = ({ product, onClose, visible }) => {
+const ProductDrawer = ({ product, userId, onClose, visible }) => {
   return (
     <Drawer
       title={product.title}
@@ -16,6 +42,7 @@ const ProductDrawer = ({ product, onClose, visible }) => {
       <p>Description: {product.description}</p>
       <p>CategoryId: {product.categoryId}</p>
       {/* Add more product details here */}
+      {userId && <p>User ID: {userId}</p>}
     </Drawer>
   );
 };

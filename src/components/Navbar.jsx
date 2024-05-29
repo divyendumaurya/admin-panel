@@ -66,11 +66,11 @@ const Navbar = () => {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
           <Link to="/user/products" className="flex items-center space-x-3 rtl:space-x-reverse">
             <img
-              src="https://www.svgrepo.com/show/303238/google-drive-logo.svg"
+              src="https://www.svgrepo.com/show/530588/column-chart.svg"
               className="h-8"
               alt="Flowbite Logo"
             />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Admin</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Admin Dashboard</span>
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <Link to="/user/products" className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 mb-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
