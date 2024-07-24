@@ -2,26 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Async Thunks
-export const checkUserAvailability = createAsyncThunk(
-  'registration/checkUserAvailability',
-  async (email) => {
-    const response = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', { email });
-    return response.data.isAvailable;
-  }
-);
-
 export const registerUser = createAsyncThunk(
   'registration/registerUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const availabilityResponse = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', { email: userData.email });
-      if (!availabilityResponse.data.isAvailable) {
-        return rejectWithValue('User already exists');
-      }
-      const request = await axios.post('https://api.escuelajs.co/api/v1/users/', userData);
-      console.log(request.data)
-      return request.data;
-      
+      const response = await axios.post('https://api.escuelajs.co/api/v1/users/', userData);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }

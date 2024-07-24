@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'flowbite-react';
-import UserProfile from '../components/UserProfile';
+
 
 function getUser() {
   const userString = localStorage.getItem('user');

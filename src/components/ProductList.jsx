@@ -102,6 +102,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, deleteProduct } from '../store/ProductSlice';
 import { Link } from 'react-router-dom';
 import ProductDrawer from '../components/ProductDrawer';
+import UserProfile from './UserProfile';
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -126,7 +127,11 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(fetchProducts());
     setUserId(user ? user.id : null); // Set the userId when the component mounts
-  }, [dispatch, user]);
+  }, [dispatch]);
+
+  // dispatch, user
+
+  // chnage aya h yha pe UNDO 
 
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
@@ -147,6 +152,7 @@ const ProductList = () => {
 
   return (
     <div className="flex justify-center">
+      {/* <div><UserProfile/></div> */}
       <div className="w-2/3 max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Product List</h5>
@@ -178,13 +184,13 @@ const ProductList = () => {
                         </svg>
                       </button>
                       <Link to={`/user/edit-product/${product.id}`}>
-                        <button className="text-blue-600 hover:text-blue-700 mr-3">
+                        <button className="text-blue-600 hover:text-blue-800 mr-3">
                           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                           </svg>
                         </button>
                       </Link>
-                      <button onClick={() => handleDelete(product.id)} className="text-red-600 hover:text-red-700">
+                      <button onClick={() => handleDelete(product.id)} className="text-red-600 hover:text-red-800">
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                           <path
                             fillRule="evenodd"

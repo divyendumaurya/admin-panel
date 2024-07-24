@@ -42,9 +42,9 @@
 
 
 
-
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import UserProfile from './UserProfile'; // Ensure correct import path
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <nav className="bg-white border-gray-200 dark:bg-gray-900 shadow-md">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
           <Link to="/user/products" className="flex items-center space-x-3 rtl:space-x-reverse">
             <img
@@ -83,13 +83,16 @@ const Navbar = () => {
               Contact
             </Link>
             {isLoggedIn ? (
-              <button
-                onClick={handleLogout}
-                type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Logout
-              </button>
+              <>
+                <UserProfile />
+                <button
+                  onClick={handleLogout}
+                  type="button"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <button
                 onClick={handleLogin}
