@@ -1,26 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../store/RegistrationSlice';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../store/RegistrationSlice";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const [username, setUsername] = useState('');
-  const [useremail, setUseremail] = useState('');
-  const [password, setPassword] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [useremail, setUseremail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [hasNavigated, setHasNavigated] = useState(false);
 
-  const { loading, error, user } = useSelector((state) => state.registration);
+  const { loading, error, user, message } = useSelector(
+    (state) => state.registration
+  );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (message && !hasNavigated) {
+      toast.success(message); // Show the success message
+      setHasNavigated(true); // Set the flag to true so that the navigation happens only once
+      navigate("/login"); // Navigate to the login page
+    }
+  }, [message, navigate, hasNavigated]);
 
   useEffect(() => {
-    if (user) {
-      setSuccessMessage('User registered successfully!');
-      const timer = setTimeout(() => {
-        setSuccessMessage('');
-      }, 2000);
-      return () => clearTimeout(timer);
+    if (error) {
+      toast.error(error);
     }
-  }, [user]);
+  }, [error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +37,7 @@ const Signup = () => {
       name: username,
       email: useremail,
       password: password,
-      avatar: 'https://picsum.photos/800' // default avatar URL
+      avatar: "https://picsum.photos/800", // default avatar URL
     };
     dispatch(registerUser(userData));
   };
@@ -44,7 +53,12 @@ const Signup = () => {
               </h1>
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
-                  <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                  <label
+                    htmlFor="username"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Username
+                  </label>
                   <input
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -57,7 +71,12 @@ const Signup = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="useremail" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                  <label
+                    htmlFor="useremail"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Email
+                  </label>
                   <input
                     value={useremail}
                     onChange={(e) => setUseremail(e.target.value)}
@@ -70,7 +89,12 @@ const Signup = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
                   <input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -87,7 +111,7 @@ const Signup = () => {
                   disabled={loading}
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  {loading ? 'Loading...' : 'Sign Up'}
+                  {loading ? "Loading..." : "Sign Up"}
                 </button>
 
                 {successMessage && (
@@ -96,15 +120,14 @@ const Signup = () => {
                   </div>
                 )}
 
-                {error && (
-                  <span className="font-medium text-red-600">
-                    <p>{error}</p>
-                  </span>
-                )}
-
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?
-                  <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
+                  <Link
+                    to="/login"
+                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  >
+                    Login here
+                  </Link>
                 </p>
               </form>
             </div>

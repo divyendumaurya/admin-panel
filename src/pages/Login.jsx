@@ -93,44 +93,68 @@
 
 // export default Login;
 
-
-
-
-
-
-
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, fetchUserProfile } from '../store/UserSlice';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, fetchUserProfile } from "../store/UserSlice";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // UseEffect to show the error toast if error exists
+  useEffect(() => {
+    if (error) {
+      toast.error(error); // This will show the error toast with the message
+    }
+  }, [error]);
+
   const handleLogin = (e) => {
     e.preventDefault();
     const userCred = { email, password };
-    dispatch(loginUser(userCred)).then((result) => {
-      if (result.payload) {
-        localStorage.setItem('access_token', result.payload.access_token);
-        localStorage.setItem('refresh_token', result.payload.refresh_token);
+    dispatch(loginUser(userCred))
+      .then((result) => {
+        if (result.payload) {
+          localStorage.setItem("access_token", result.payload.access_token);
+          localStorage.setItem("refresh_token", result.payload.refresh_token);
 
-        // Fetch the user profile after a successful login
-        dispatch(fetchUserProfile()).then((profileResult) => {
-          if (profileResult.payload) {
-            localStorage.setItem('user', JSON.stringify(profileResult.payload));
-            setEmail('');
-            setPassword('');
-            navigate('/user/products');
-          }
-        });
-      }
-    });
+          // Fetch the user profile after login
+          dispatch(fetchUserProfile())
+            .then((profileResult) => {
+              if (profileResult.payload) {
+                localStorage.setItem(
+                  "user",
+                  JSON.stringify(profileResult.payload)
+                );
+                setEmail(""); // Clear input fields
+                setPassword(""); // Clear password
+                navigate("/user/products"); // Navigate to products page
+                toast.success("Login Successful"); // Show success toast
+              } else if (profileResult.error) {
+                // If error fetching profile
+                toast.error(
+                  profileResult.error.message || "Failed to fetch user profile."
+                );
+              }
+            })
+            .catch((profileError) => {
+              // In case of network error or other issues while fetching profile
+              toast.error(
+                profileError.message ||
+                  "An error occurred while fetching user profile."
+              );
+            });
+        }
+      })
+      .catch((loginError) => {
+        // In case of network error or other issues during login
+        toast.error(loginError.message || "An error occurred during login.");
+      });
   };
 
   return (
@@ -144,7 +168,10 @@ const Login = () => {
               </h1>
               <form onSubmit={handleLogin} className="space-y-4 md:space-y-6">
                 <div>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Email
                   </label>
                   <input
@@ -159,7 +186,10 @@ const Login = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Password
                   </label>
                   <input
@@ -178,14 +208,17 @@ const Login = () => {
                   disabled={loading}
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  {loading ? 'Loading...' : 'Login'}
+                  {loading ? "Loading..." : "Login"}
                 </button>
-                <span className="font-medium text-red-600 text-center">
+                {/* <span className="font-medium text-red-600 text-center">
                   {error && <p>{error} </p>}
-                </span>
+                </span> */}
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don't have an account?{' '}
-                  <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                  Don't have an account?{" "}
+                  <Link
+                    to="/signup"
+                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  >
                     Sign up here
                   </Link>
                 </p>
@@ -199,8 +232,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-
