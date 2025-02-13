@@ -44,6 +44,7 @@ import { useNavigate, Link } from "react-router-dom";
 import UserProfile from "./UserProfile";
 import { generateConfirm } from "../utils/ConfirmAlert";
 import toast from "react-hot-toast";
+import DefaultAvatar from "./DefaultAvatar";
 
 const Navbar = () => {
   const navigate = useNavigate();

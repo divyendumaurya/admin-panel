@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile } from "../store/UserSlice";
+import Avatar from "./DefaultAvatar";
+import DefaultAvatar from "./DefaultAvatar";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -26,10 +28,10 @@ const UserProfile = () => {
     <div className="flex items-center space-x-2">
       {profile ? (
         <>
-          <img
-            className="h-8 w-8 rounded-full"
+          <Avatar
             src={profile.avatar}
-            alt="User Avatar"
+            className="h-8 w-8 rounded-full"
+            alt="User avatar"
           />
           <span className="text-sm text-gray-900 dark:text-white">
             {profile.name}

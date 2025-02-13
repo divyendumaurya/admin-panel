@@ -1,18 +1,19 @@
-// src/components/EditProduct.js
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateProduct, deleteProduct } from '../store/ProductSlice';
-import { useNavigate, useParams } from 'react-router-dom';
-
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProduct, deleteProduct } from "../store/ProductSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
+import bgImg from "../assets/bg.jpg";
+import { generateConfirm } from "../utils/ConfirmAlert";
+import toast from "react-hot-toast";
 
 const EditProduct = () => {
   const { id } = useParams();
   const product = useSelector((state) =>
     state.products.products.find((product) => product.id === parseInt(id))
   );
-  const [title, setTitle] = useState(product ? product.title : '');
-  const [price, setPrice] = useState(product ? product.price : '');
+  const [title, setTitle] = useState(product ? product.title : "");
+  const [price, setPrice] = useState(product ? product.price : "");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,94 +27,93 @@ const EditProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateProduct({ id, productData: { title, price } })).then(() => {
-      navigate('/user/products');
+      navigate("/user/products");
     });
   };
 
   const handleDelete = () => {
-    dispatch(deleteProduct(id)).then(() => {
-      navigate('/user/products');
-    });
+    generateConfirm(
+      "Confirm Deletion",
+      "Are you sure you want to delete this product?",
+      null,
+      () => {
+        dispatch(deleteProduct(id)).then(() => {
+          navigate("/user/products");
+          toast.success("Product Deleted Successfully");
+        });
+      }
+    );
   };
 
   if (!product) return <p>Product not found</p>;
 
   return (
-    <>
-      
-      <section className="bg-white dark:bg-gray-900">
-        <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
-          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update product</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="title"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Product Name
-                </label>
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Type product name"
-                  required
-                />
-              </div>
-              <div className="w-full">
-                <label
-                  htmlFor="price"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Price
-                </label>
-                <input
-                  type="number"
-                  name="price"
-                  id="price"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  placeholder="₹299"
-                  required
-                />
-              </div>
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+      style={{ backgroundImage: `url(${bgImg})` }}
+    >
+      <div className="max-w-2xl w-full bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div className="p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Update Product
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Product Name
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                placeholder="Type product name"
+              />
             </div>
-            <div className="flex items-center space-x-4">
+
+            <div>
+              <label
+                htmlFor="price"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Price
+              </label>
+              <input
+                type="number"
+                id="price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                placeholder="₹299"
+              />
+            </div>
+
+            <div className="flex space-x-4">
               <button
                 type="submit"
-                className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                Update product
+                Update Product
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
-                className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                className="w-full flex justify-center items-center py-2 px-4 border border-red-600 text-red-600 rounded-md shadow-sm text-sm font-medium hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
-                <svg
-                  className="w-5 h-5 mr-1 -ml-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <FaTrash className="mr-2" />
                 Delete
               </button>
             </div>
           </form>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 };
 
